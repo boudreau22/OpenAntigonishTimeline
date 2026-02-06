@@ -1,13 +1,14 @@
-# OpenAntigonish Vaccine Timeline
+# Town of Antigonish Capital Projects Timeline
 
-This project provides a timeline of COVID-19 vaccine developments, including key milestones for Pfizer/BioNTech, Moderna, Johnson & Johnson, and Novavax.
+This project provides a timeline of capital projects in the Town of Antigonish, visualizing phases and key events for projects such as Bay Street, West Street, and the Active Transportation Trail.
 
 ## Data
 
-The data is stored in `vaccine_timeline.json` and includes:
-- **pfizerFacts**: Specific milestones for the Pfizer vaccine.
-- **pfizerTimeline**: Phases and periods for the Pfizer vaccine.
-- **otherVaccines**: Milestones for Moderna, J&J, and Novavax.
+The data is stored in `town_projects.json`. Each project includes:
+- **title**: The name of the project.
+- **color**: The color code used for visualization.
+- **phases**: A list of project phases (ranges).
+- **events**: A list of specific events (moments).
 
 ## Visualization
 
