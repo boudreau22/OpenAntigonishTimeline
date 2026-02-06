@@ -3,167 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Town of Antigonish Capital Projects Timeline</title>
-    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
-    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-timeline.min.js"></script>
-    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-ui.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.anychart.com/releases/8.11.0/css/anychart-ui.min.css">
+    <title>OpenAntigonish: Capital Projects</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script type="text/javascript" src="https://unpkg.com/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+
     <style>
-        html, body, #container {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
+        /* --- Dropbox Paper Aesthetic Styles --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #191919;
+            --grid-line-color: #f0f0f0;
+            --today-line-color: #ff4d4d;
         }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 40px;
+            margin: 0;
+        }
+
+        h1 {
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 30px;
+        }
+
+        /* Timeline Container Cleanup */
+        .vis-timeline {
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+
+        /* The Header (Dates) */
+        .vis-time-axis .vis-text {
+            color: #888;
+            padding-top: 5px;
+        }
+        .vis-time-axis .vis-grid.vis-minor {
+            border-color: var(--grid-line-color);
+        }
+        .vis-time-axis .vis-grid.vis-major {
+            border-color: #e0e0e0;
+        }
+
+        /* The Left Panel (Groups) */
+        .vis-labelset .vis-label {
+            border-bottom: 1px solid var(--grid-line-color);
+            color: var(--text-color);
+            font-weight: 600;
+            padding-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* The Items (Ranges) - Making them look like "pills" */
+        .vis-item {
+            border-color: transparent;
+            background-color: transparent;
+            font-size: 13px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Soft modern shadow */
+        }
+
+        .vis-item.vis-range {
+            border-radius: 6px; /* Rounded corners */
+            border: none; 
+        }
+
+        /* Content inside the range bars */
+        .vis-item .vis-item-content {
+            padding: 0 8px;
+            font-weight: 500;
+            color: white; 
+        }
+
+        /* The Moments (Points) */
+        .vis-item.vis-point {
+            background-color: transparent;
+        }
+        .vis-item.vis-dot {
+            border-width: 2px;
+            box-shadow: 0 0 0 2px white; /* White ring around dots */
+        }
+
+        /* Custom colored borders/backgrounds handled in JS, 
+           but we set defaults to clean up standard Vis.js mess */
+        .vis-item.vis-selected {
+            border-color: #333;
+            background-color: inherit;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 999;
+        }
+
+        /* Today Marker */
+        .vis-current-time {
+            background-color: var(--today-line-color);
+            width: 2px;
+        }
+
+        /* Tooltip styling */
+        .custom-tooltip {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            border: 1px solid #eee;
+            max-width: 250px;
+        }
+        .tooltip-title { font-weight: 600; margin-bottom: 4px; display:block;}
+        .tooltip-desc { font-size: 12px; color: #666; display:block; line-height: 1.4em;}
+        .tooltip-date { font-size: 11px; color: #999; margin-top: 8px; display:block; text-transform: uppercase; letter-spacing: 0.5px;}
+
     </style>
 </head>
 <body>
 
-    <div id="container"></div>
+    <h1>Town of Antigonish <span style="color:#999; font-weight:400;">Project Timeline</span></h1>
+    <div id="visualization"></div>
 
     <script>
-        anychart.onDocumentReady(function () {
-            fetch('town_projects.json')
-                .then(response => response.json())
-                .then(data => {
-                    // Create the chart
-                    var chart = anychart.timeline();
+        // --- Helper: Format Data for Vis.js ---
+        function processData(data) {
+            let groups = new vis.DataSet();
+            let items = new vis.DataSet();
+            let groupCount = 0;
 
-                    // Function to create series for a project
-                    function createProjectSeries(projectData, projectKey) {
-                        // Color with opacity for ranges
-                        // We can't easily parse hex here without a library, but AnyChart supports opacity in fill string or object
-                        // Let's assume hex and use AnyChart's color helper or just simple hex if no opacity needed
-                        // User requested opacity. Let's use anychart.color.lighten or set opacity.
-                        var color = projectData.color;
-                        var fill = anychart.color.setOpacity(color, 0.6);
+            // Helper to add a project
+            function addProject(project, key) {
+                if (!project) return;
+                
+                let groupId = groupCount++;
+                
+                // Add Group (The Row Header)
+                groups.add({
+                    id: groupId,
+                    content: project.title,
+                    order: groupId
+                });
 
-                        // Range Series
-                        var ranges = projectData.phases.map(p => ({
-                            name: p.name,
-                            start: new Date(p.start),
-                            end: new Date(p.end),
-                            fill: fill,
-                            stroke: color,
-                            description: p.description
-                        }));
-                        var rangeSeries = chart.range(ranges);
-                        rangeSeries.name(projectData.title); // For Legend
-                        // Set series fill/stroke to match project color so Legend picks it up
-                        rangeSeries.fill(fill);
-                        rangeSeries.stroke(color);
-
-                        rangeSeries.labels().format("{%name}");
-                        rangeSeries.labels().fontColor("#ffffff");
-                        rangeSeries.tooltip().useHtml(true);
-
-                        // Moment Series
-                        var moments = projectData.events.map(e => ({
-                            x: new Date(e.date),
-                            y: e.name,
-                            description: e.description
-                        }));
-                        var momentSeries = chart.moment(moments);
-                        momentSeries.name(projectData.title + " Events"); // For Legend if needed, or hide
-                        momentSeries.normal().markers().fill(color);
-                        momentSeries.normal().markers().stroke(color);
-                        momentSeries.direction("down");
-
-                        // We might want to hide moment series from legend to avoid clutter?
-                        // Or show them. The user said "label somewhere what the projects are".
-                        // Legend items for "Bay Street Capital Project" (Range) is enough.
-                        momentSeries.legendItem().enabled(false);
-
-                        return { ranges, moments };
-                    }
-
-                    var allData = [];
-
-                    // Bay Street
-                    var bay = createProjectSeries(data.bayStreet, "bayStreet");
-                    allData = allData.concat(bay.ranges.map(r => r.start), bay.ranges.map(r => r.end), bay.moments.map(m => m.x));
-
-                    // West Street
-                    var west = createProjectSeries(data.westStreet, "westStreet");
-                    allData = allData.concat(west.ranges.map(r => r.start), west.ranges.map(r => r.end), west.moments.map(m => m.x));
-
-                    // Active Trail
-                    if (data.activeTrail) {
-                        var trail = createProjectSeries(data.activeTrail, "activeTrail");
-                        allData = allData.concat(trail.ranges.map(r => r.start), trail.ranges.map(r => r.end), trail.moments.map(m => m.x));
-                    }
-
-                    // --- Tooltips (Global format if not overridden) ---
-                    chart.tooltip().useHtml(true);
-                    chart.tooltip().format(function() {
-                        var start = this.start ? anychart.format.dateTime(this.start, "dd MMM yyyy") : null;
-                        var end = this.end ? anychart.format.dateTime(this.end, "dd MMM yyyy") : null;
-                        var date = this.x ? anychart.format.dateTime(this.x, "dd MMM yyyy") : null;
-
-                        var title = this.getData("name") || this.value;
-                        var desc = this.getData("description");
-                        var seriesName = this.seriesName;
-
-                        var content = "<span style='font-weight:600;font-size:12pt'>" + title + "</span><br>";
-                        content += "<span style='font-size:10pt; color: #888'>" + seriesName + "</span><br><br>";
-
-                        if (start && end) {
-                            content += "Dates: " + start + " - " + end + "<br>";
-                        } else if (date) {
-                            content += "Date: " + date + "<br>";
-                        }
-
-                        if (desc) {
-                            content += desc;
-                        }
-                        return content;
+                // Add Ranges (Phases)
+                if (project.phases) {
+                    project.phases.forEach(phase => {
+                        items.add({
+                            group: groupId,
+                            content: phase.name,
+                            start: phase.start,
+                            end: phase.end,
+                            type: 'range',
+                            // Styling injection directly on item
+                            style: `background-color: ${project.color}; opacity: 0.85;`, 
+                            title: generateTooltip(phase.name, phase.description, phase.start, phase.end)
+                        });
                     });
+                }
 
-                    // --- Scroller ---
-                    chart.scroller().enabled(true);
+                // Add Moments (Events)
+                if (project.events) {
+                    project.events.forEach(evt => {
+                        items.add({
+                            group: groupId,
+                            content: evt.name,
+                            start: evt.date,
+                            type: 'point',
+                            style: `color: ${project.color}; border-color: ${project.color}; background-color: ${project.color};`, 
+                            title: generateTooltip(evt.name, evt.description, evt.date, null)
+                        });
+                    });
+                }
+            }
 
-                    // --- Legend ---
-                    chart.legend().enabled(true);
-                    chart.legend().fontSize(14);
-                    chart.legend().padding(10);
+            // Load your specific projects
+            addProject(data.bayStreet, 'bayStreet');
+            addProject(data.westStreet, 'westStreet');
+            if (data.activeTrail) addProject(data.activeTrail, 'activeTrail');
 
-                    // --- Markers ---
-                    var todayMarker = chart.todayMarker();
-                    todayMarker.stroke("#dd2c00", 2, "5 2");
+            return { groups, items };
+        }
 
-                    // Year Markers
-                    var minYear = new Date(Math.min.apply(null, allData)).getFullYear();
-                    var maxYear = new Date(Math.max.apply(null, allData)).getFullYear();
-                    maxYear = Math.max(maxYear, new Date().getFullYear());
+        // --- Helper: Tooltip HTML generator ---
+        function generateTooltip(title, desc, start, end) {
+            let dateStr = new Date(start).toLocaleDateString();
+            if (end) dateStr += " - " + new Date(end).toLocaleDateString();
+            
+            return `
+                <div class="custom-tooltip">
+                    <span class="tooltip-title">${title}</span>
+                    <span class="tooltip-desc">${desc || ''}</span>
+                    <span class="tooltip-date">${dateStr}</span>
+                </div>
+            `;
+        }
 
-                    var markerIndex = 0;
-                    for (var y = minYear; y <= maxYear; y++) {
-                        var lineMarker = chart.lineMarker(markerIndex);
-                        lineMarker.value(new Date(y, 0, 1));
-                        lineMarker.stroke("#555", 2, "5 2");
+        // --- Main Execution ---
+        fetch('town_projects.json')
+            .then(response => response.json())
+            .then(rawData => {
+                const { groups, items } = processData(rawData);
 
-                        var textMarker = chart.textMarker(markerIndex);
-                        textMarker.value(new Date(y, 0, 1));
-                        textMarker.text(y.toString());
-                        textMarker.fontSize(16);
-                        textMarker.fontColor("#555");
-                        textMarker.fontWeight("bold");
-                        textMarker.anchor("left-top");
-                        textMarker.padding(5);
-
-                        markerIndex++;
+                // Configuration options for the sleek look
+                var options = {
+                    stack: true, // Stack items if they overlap
+                    maxHeight: '600px',
+                    minHeight: '300px',
+                    verticalScroll: true,
+                    zoomKey: 'ctrlKey',
+                    start: new Date(new Date().getFullYear(), 0, 1), // Start at beginning of this year
+                    end: new Date(new Date().getFullYear(), 11, 31),
+                    editable: false,
+                    margin: {
+                        item: 10, // Space between items
+                        axis: 5
+                    },
+                    tooltip: {
+                        followMouse: true,
+                        overflowMethod: 'cap'
                     }
+                };
 
-                    // Title
-                    chart.title("Town of Antigonish Capital Projects Timeline");
+                var container = document.getElementById('visualization');
+                var timeline = new vis.Timeline(container, items, groups, options);
 
-                    chart.container("container");
-                    chart.draw();
-                    chart.fit();
-                })
-                .catch(error => console.error('Error loading data:', error));
-        });
+            })
+            .catch(err => {
+                console.error("Error loading data:", err);
+                document.getElementById('visualization').innerHTML = "Could not load project data.";
+            });
     </script>
-
 </body>
 </html>
