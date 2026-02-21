@@ -202,7 +202,7 @@
         }
 
         // --- Main Execution ---
-        fetch('town_projects.json')
+        fetch('../src/data/town_projects.json')
             .then(response => response.json())
             .then(rawData => {
                 const { groups, items } = processData(rawData);

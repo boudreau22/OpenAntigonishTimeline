@@ -68,7 +68,11 @@ def validate_data(filepath):
     return success
 
 if __name__ == "__main__":
-    if validate_data('town_projects.json'):
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(script_dir, '../src/data/town_projects.json')
+
+    if validate_data(json_path):
         print("Data validation passed.")
         sys.exit(0)
     else:

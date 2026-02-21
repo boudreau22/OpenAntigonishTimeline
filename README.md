@@ -3,6 +3,21 @@
 An interactive, data‑driven visualization of municipal capital projects in the Town of Antigonish.  
 This timeline highlights project phases, milestones, delays, and completion dates for initiatives such as Bay Street, West Street, and the Active Transportation Trail.
 
+## Project Structure
+
+- `public/`: Contains the static HTML and assets.
+- `src/`: Contains source code and data for future development (Astro/React).
+  - `data/`: Contains `town_projects.json`.
+- `tools/`: Contains utility scripts like data validation.
+- `tests/`: Contains tests.
+
+## Data
+
+The data is stored in `src/data/town_projects.json`. Each project includes:
+- **title**: The name of the project.
+- **color**: The color code used for visualization.
+- **phases**: A list of project phases (ranges).
+- **events**: A list of specific events (moments).
 ---
 
 ## 🚀 Overview
@@ -13,6 +28,12 @@ This repository provides:
 - A modern, interactive timeline visualization  
 - A foundation for integrating automated scheduling, constraints, and public transparency tools in future versions  
 
+1. Ensure you have Python installed.
+2. Run the following command in the project directory (root):
+   ```bash
+   python3 -m http.server
+   ```
+3. Open your browser and navigate to `http://localhost:8000/public/index.html`.
 The goal is to make civic project progress **clear, accessible, and transparent** for residents, staff, and council.
 
 ---
@@ -78,7 +99,7 @@ http://localhost:8000/index.html
 Run the validation script to ensure the JSON file is well‑formed:
 
 ```bash
-python3 validate_data.py
+python3 tools/validate_data.py
 ```
 
 ---
