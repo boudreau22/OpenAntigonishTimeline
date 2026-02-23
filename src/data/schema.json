@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z0-9]+$": {
+      "type": "object",
+      "required": ["title", "color"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "start", "end", "description"],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "start": {
+                "type": "string",
+                "format": "date"
+              },
+              "end": {
+                "type": "string",
+                "format": "date"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "date", "description"],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

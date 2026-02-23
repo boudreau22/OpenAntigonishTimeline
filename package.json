@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "validate": "node tools/validate_data.js"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.0",
@@ -24,6 +25,8 @@
     "vis-timeline": "^7.7.0"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.0"
+    "@types/uuid": "^9.0.0",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1"
   }
 }
