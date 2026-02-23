@@ -8,13 +8,13 @@ Each task includes model preference, domain, description, and rationale.
 # PHASE 1 — Timeline Modernization (Standalone Repo)
 
 ### Timeline Component Migration
-- [ ] `[Gemini 3 Pro (High)]` `[Frontend]` **Create Astro project scaffold**
+- [x] `[Gemini 3 Pro (High)]` `[Frontend]` **Create Astro project scaffold**
   - Initialize Astro with React support
   - Add TailwindCSS
   - Set up `/public` and `/src` structure
   - **Why:** Foundation for the modern timeline component
 
-- [ ] `[Gemini 3 Pro (High)]` `[Frontend]` **Implement <Timeline /> React component**
+- [x] `[Gemini 3 Pro (High)]` `[Frontend]` **Implement <Timeline /> React component**
   - Render phases + events from JSON
   - Add zoom, pan, hover interactions
   - Use D3.js or Vis.js
