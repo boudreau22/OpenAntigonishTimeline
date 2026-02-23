@@ -1,2 +1,10 @@
-/* Placeholder for main application styles */
-/* Future styles for the Timeline component and layout */
+/* Main CSS Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #f8fafc;
+    color: #1e293b;
+    font-family: 'Inter', sans-serif;
+}

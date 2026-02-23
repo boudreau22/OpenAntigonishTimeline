@@ -1,2 +1,7 @@
-// Placeholder for data validation tests
-// This will test the structure and content of town_projects.json
+// Data Validation Tests
+describe("Timeline Data Schema", () => {
+    test("should have valid project structure", () => {
+        // Placeholder for schema validation logic
+        expect(true).toBe(true);
+    });
+});

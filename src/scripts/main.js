@@ -1,2 +1,2 @@
-// Placeholder for main application script
-// This will handle data fetching and visualization initialization in the future
+// Placeholder main.js
+console.log("Modernized Antigonish Timeline Loaded");
