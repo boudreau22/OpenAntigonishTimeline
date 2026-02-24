@@ -55,18 +55,18 @@ Each task includes model preference, domain, description, and rationale.
 # PHASE 3 — Scheduling Engine
 
 ### Constraint Solver
-- [ ] `[Gemini 3 Pro (High)]` `[Backend]` **Implement CPM + constraint solver**
+- [x] `[Gemini 3 Pro (High)]` `[Backend]` **Implement CPM + constraint solver**
   - Build dependency graph
   - Compute earliest/latest start
   - Detect conflicts
   - **Why:** Automates scheduling
 
-- [ ] `[Gemini 3 Flash]` `[Backend]` **Add constraint ingestion**
+- [x] `[Gemini 3 Flash]` `[Backend]` **Add constraint ingestion**
   - Materials, crews, weather, tenders
   - **Why:** Real-world scheduling inputs
 
 ### Engine Integration
-- [ ] `[Gemini 3 Pro]` `[Backend]` **Implement /schedule/recalculate**
+- [x] `[Gemini 3 Pro]` `[Backend]` **Implement /schedule/recalculate**
   - Recompute all timelines
   - Return updated project states
   - **Why:** Keeps system current
