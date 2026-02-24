@@ -76,17 +76,17 @@ Each task includes model preference, domain, description, and rationale.
 # PHASE 4 — Staff Dashboard
 
 ### Core UI
-- [ ] `[Gemini 3 Pro]` `[Frontend]` **Build IssueTable**
+- [x] `[Gemini 3 Pro]` `[Frontend]` **Build IssueTable**
   - Sorting, filtering, search
   - Status indicators
   - **Why:** Staff need operational clarity
 
-- [ ] `[Gemini 3 Pro]` `[Frontend]` **Build TaskList + ConstraintEditor**
+- [x] `[Gemini 3 Pro]` `[Frontend]` **Build TaskList + ConstraintEditor**
   - Add/edit tasks
   - Add/edit constraints
   - **Why:** Enables scheduling engine inputs
 
-- [ ] `[Gemini 3 Flash]` `[Frontend]` **Build ScheduleSuggestions panel**
+- [x] `[Gemini 3 Flash]` `[Frontend]` **Build ScheduleSuggestions panel**
   - Show idle crew opportunities
   - Show conflicts
   - **Why:** Helps staff make decisions
