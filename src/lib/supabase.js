@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+// Fallback values prevent build/runtime crashes in environments without keys (e.g. CI, local dev)
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || 'https://example.com';
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 'dummy-key';
 
 // Helper to create a Supabase client with request context (for SSR)
 export const getSupabase = (request) => {

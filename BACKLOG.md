@@ -96,19 +96,19 @@ Each task includes model preference, domain, description, and rationale.
 # PHASE 5 — Public Transparency Page (OpenAntigonish)
 
 ### Public-Facing Components
-- [ ] `[Gemini 3 Flash]` `[Frontend]` **Embed timeline component**
+- [x] `[Gemini 3 Flash]` `[Frontend]` **Embed timeline component**
   - Use /embed version
   - **Why:** Public visibility
 
-- [ ] `[Gemini 3 Flash]` `[Frontend]` **Add PublicIssueList**
+- [x] `[Gemini 3 Flash]` `[Frontend]` **Add PublicIssueList**
   - Show operational issues + statuses
   - **Why:** Transparency for residents
 
-- [ ] `[Gemini 3 Flash]` `[Frontend]` **Add TopIdeasFromShapely**
+- [x] `[Gemini 3 Flash]` `[Frontend]` **Add TopIdeasFromShapely**
   - Show upvoted ideas
   - **Why:** Community engagement
 
-- [ ] `[Gemini 3 Flash]` `[Frontend]` **Add RecentlyCompleted feed**
+- [x] `[Gemini 3 Flash]` `[Frontend]` **Add RecentlyCompleted feed**
   - Pull from completed tasks
   - **Why:** Celebrate progress
 
