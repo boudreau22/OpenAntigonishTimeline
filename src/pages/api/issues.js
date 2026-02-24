@@ -57,3 +57,49 @@ export const POST = async ({ request }) => {
         });
     }
 };
+
+export const PUT = async ({ request }) => {
+    const supabase = getSupabase(request);
+    try {
+        const body = await request.json();
+        const { id, ...updates } = body;
+
+        if (!id) {
+            return new Response(JSON.stringify({ error: 'Issue ID is required' }), {
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
+        const { data, error } = await supabase
+            .from('issues')
+            .update(updates)
+            .eq('id', id)
+            .select();
+
+        if (error) {
+            return new Response(JSON.stringify({ error: error.message }), {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
+        return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (err) {
+        return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+};

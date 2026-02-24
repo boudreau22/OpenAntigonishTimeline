@@ -117,14 +117,14 @@ Each task includes model preference, domain, description, and rationale.
 # PHASE 6 — Shapely Integration
 
 ### Sync Layer
-- [ ] `[Gemini 3 Pro]` `[Backend]` **Implement Shapely → Supabase sync worker**
+- [x] `[Gemini 3 Pro]` `[Backend]` **Implement Shapely → Supabase sync worker**
   - Sync ideas
   - Sync upvotes
   - Map to issues table
   - **Why:** Unified pipeline
 
 ### Conversion Tools
-- [ ] `[Gemini 3 Flash]` `[Frontend]` **Add “Convert to Project Task” button**
+- [x] `[Gemini 3 Flash]` `[Frontend]` **Add “Convert to Project Task” button**
   - Staff can turn ideas into tasks
   - **Why:** Bridges ideas → action
 
@@ -133,13 +133,13 @@ Each task includes model preference, domain, description, and rationale.
 # PHASE 7 — Final Polish & Governance
 
 ### Documentation
-- [ ] `[Gemini 3 Flash]` `[Docs]` **Write contributor guide**
+- [x] `[Gemini 3 Flash]` `[Docs]` **Write contributor guide**
   - Repo structure
   - Coding standards
   - Deployment steps
   - **Why:** Smooth onboarding
 
-- [ ] `[Gemini 3 Flash]` `[Docs]` **Write governance manifest**
+- [x] `[Gemini 3 Flash]` `[Docs]` **Write governance manifest**
   - Decision-making rules
   - Data ownership
   - Transparency commitments
