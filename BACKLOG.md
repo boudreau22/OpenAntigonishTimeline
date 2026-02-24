@@ -20,12 +20,12 @@ Each task includes model preference, domain, description, and rationale.
   - Use D3.js or Vis.js
   - **Why:** Core visualization engine
 
-- [ ] `[Gemini 3 Flash]` `[Frontend]` **Create /embed build output**
+- [x] `[Gemini 3 Flash]` `[Frontend]` **Create /embed build output**
   - Lightweight version for OpenAntigonish
   - No navigation, minimal chrome
   - **Why:** Allows embedding into other sites
 
-- [ ] `[Gemini 3 Flash]` `[Data]` **Refactor town_projects.json into schema**
+- [x] `[Gemini 3 Flash]` `[Data]` **Refactor town_projects.json into schema**
   - Add validation rules
   - Add schema file
   - **Why:** Ensures consistent data for scheduling engine
@@ -35,17 +35,17 @@ Each task includes model preference, domain, description, and rationale.
 # PHASE 2 — Backend Foundations (Supabase)
 
 ### Database Setup
-- [ ] `[Gemini 3 Pro (High)]` `[Backend]` **Create Supabase project + schema**
+- [x] `[Gemini 3 Pro (High)]` `[Backend]` **Create Supabase project + schema**
   - Tables: issues, projects, tasks, constraints, staff
   - Add RLS policies
   - **Why:** Core backend for unified system
 
-- [ ] `[Gemini 3 Flash]` `[Backend]` **Add triggers for priority scoring**
+- [x] `[Gemini 3 Flash]` `[Backend]` **Add triggers for priority scoring**
   - Auto-update priority_score on upvote
   - **Why:** Keeps ranking dynamic
 
 ### API Layer
-- [ ] `[Gemini 3 Pro]` `[Backend]` **Implement REST endpoints**
+- [x] `[Gemini 3 Pro]` `[Backend]` **Implement REST endpoints**
   - /issues, /projects, /tasks, /constraints
   - /schedule/recalculate
   - **Why:** Enables frontend + engine integration

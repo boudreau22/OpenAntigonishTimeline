@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Validation schema for Town Projects data used in OpenAntigonish. Validates project structure, dates, and hex colors.",
   "type": "object",
   "patternProperties": {
     "^[a-zA-Z0-9]+$": {
