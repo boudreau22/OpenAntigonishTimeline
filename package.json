@@ -11,8 +11,10 @@
     "validate": "node tools/validate_data.js"
   },
   "dependencies": {
+    "@astrojs/node": "^8.3.4",
     "@astrojs/react": "^3.0.0",
     "@astrojs/tailwind": "^5.0.0",
+    "@supabase/supabase-js": "^2.97.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "astro": "^4.16.19",

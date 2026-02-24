@@ -1,3 +1,4 @@
+-- Initial Schema Setup for Town Projects
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -101,6 +102,7 @@ CREATE TRIGGER update_tasks_updated_at BEFORE UPDATE ON tasks FOR EACH ROW EXECU
 CREATE TRIGGER update_constraints_updated_at BEFORE UPDATE ON constraints FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
 -- Create policies
+-- Note: These policies ensure public read access but restrict modifications to authenticated users.
 
 -- Staff: Public read, Authenticated write
 CREATE POLICY "Enable read access for all users" ON staff FOR SELECT USING (true);
