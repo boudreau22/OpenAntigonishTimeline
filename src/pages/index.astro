@@ -1,6 +1,8 @@
 ---
-import Timeline from '../components/Timeline.jsx';
 import '../styles/main.css';
+import PublicIssueList from '../components/PublicIssueList.jsx';
+import TopIdeasFromShapely from '../components/TopIdeasFromShapely.jsx';
+import RecentlyCompleted from '../components/RecentlyCompleted.jsx';
 ---
 
 <html lang="en">
@@ -9,14 +11,36 @@ import '../styles/main.css';
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>OpenAntigonish Timeline</title>
+        <title>OpenAntigonish - Town Projects</title>
     </head>
     <body class="bg-gray-100 min-h-screen p-4">
-        <main class="container mx-auto">
-            <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Project Timeline</h1>
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <Timeline client:only="react" />
-            </div>
+        <main class="container mx-auto space-y-8">
+            <header class="text-center">
+                <h1 class="text-4xl font-bold mb-2 text-gray-800">OpenAntigonish Town Projects</h1>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Transparency and community engagement for our town's capital projects.
+                </p>
+            </header>
+
+            <section>
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Project Timeline</h2>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <iframe
+                        src="/embed"
+                        class="w-full h-[600px] border-none"
+                        title="Town Projects Timeline"
+                    ></iframe>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Community & Progress</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <PublicIssueList client:only="react" />
+                    <TopIdeasFromShapely client:only="react" />
+                    <RecentlyCompleted client:only="react" />
+                </div>
+            </section>
         </main>
     </body>
 </html>
