@@ -1,0 +1,43 @@
+---
+import IssueTable from '../components/IssueTable.jsx';
+import TaskList from '../components/TaskList.jsx';
+import ConstraintEditor from '../components/ConstraintEditor.jsx';
+import ScheduleSuggestions from '../components/ScheduleSuggestions.jsx';
+import '../styles/main.css';
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Staff Dashboard - OpenAntigonish</title>
+    </head>
+    <body class="bg-gray-100 min-h-screen p-4">
+        <main class="container mx-auto space-y-8">
+            <header class="flex justify-between items-center bg-white p-6 rounded-lg shadow-sm">
+                <h1 class="text-3xl font-bold text-gray-800">Staff Dashboard</h1>
+                <a href="/" class="text-blue-600 hover:text-blue-800 font-medium">View Public Timeline &rarr;</a>
+            </header>
+
+            <section>
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Schedule Insights</h2>
+                <ScheduleSuggestions client:only="react" />
+            </section>
+
+            <section>
+                <IssueTable client:only="react" />
+            </section>
+
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <TaskList client:only="react" />
+                </div>
+                <div>
+                    <ConstraintEditor client:only="react" />
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
