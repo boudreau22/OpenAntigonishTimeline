@@ -179,7 +179,7 @@ Protocol:
 
 2\. Move to Changelog Staging.
 
-3\. Periodically migrate staging → CHANGELOG.md following [changelog-and-archiving-governance.md](file:///docs/ai-skills-registry/prompts/skills/changelog-and-archiving-governance.md).
+3\. Periodically migrate staging → CHANGELOG.md.
 
 
 

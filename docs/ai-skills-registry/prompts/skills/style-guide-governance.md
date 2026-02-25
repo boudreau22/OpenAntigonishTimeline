@@ -87,9 +87,11 @@ The style guide MUST:
 ======================================================================
 Each component preview MUST:
 - Use the repo’s design system  
-- Demonstrate default, hover, focus, and active states  
-- Demonstrate disabled states  
-- Demonstrate responsive behavior  
+- Be contained within a high-contrast card or container (e.g., surface background) to ensure visibility against the page background.
+- Include a descriptive header for each section.
+- Demonstrate default, hover, focus, and active states.
+- Demonstrate disabled states.
+- Demonstrate responsive behavior.
 
 ======================================================================
 8. SAFETY & CONSTRAINTS

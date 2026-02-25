@@ -6,8 +6,8 @@ description: Deterministic cross-repo workflow for auditing architecture, UX, pe
 # Project Analysis & Improvement Governance
 
 **Description:**  
-This governed skill defines the deterministic workflow for performing a multi‑pillar audit of any repository, identifying actionable improvements, and producing a sequenced roadmap of PR bundles.  
-It replaces all ad‑hoc analysis prompts and ensures consistent, cross‑repo audit behavior.
+This governed skill defines the deterministic workflow for performing a multi-pillar audit of any repository, identifying actionable improvements, and producing a sequenced roadmap of PR bundles.  
+It replaces all ad-hoc analysis prompts and ensures consistent, cross-repo audit behavior, adhering to the `GEMINI.md` standard of managing work through `ROADMAP.md` and `TASKS.md`.  
 
 ======================================================================
 1. PURPOSE
@@ -23,7 +23,7 @@ Use this workflow to perform a structured audit across:
 - Code quality  
 - Style guide compliance  
 
-This workflow does **not** modify code or the backlog until the review phase is complete.
+This workflow does **not** modify code or task files until the review phase is complete.
 
 ======================================================================
 2. TRIGGERS
@@ -38,7 +38,9 @@ This workflow does **not** modify code or the backlog until the review phase is 
 ======================================================================
 You MUST analyze:
 - `README.md`  
-- `BACKLOG.md`  
+- `ROADMAP.md`
+- `TASKS.md`
+- `BACKLOG.md` (only if present, to identify pending migrations)
 - Project structure (`src`, `app`, `modules`, etc.)  
 - Style guide location (if present)  
 - Routing structure  
@@ -115,7 +117,7 @@ If missing, this MUST be included as a **Major Improvement**.
 You MUST:
 - Identify **up to 50 improvements**  
 - Ensure each is **specific to the repo**  
-- Ensure none already exist in `BACKLOG.md`  
+- Ensure none already exist in `ROADMAP.md` or `TASKS.md`  
 - Provide a **clear rationale** for each  
 - Categorize by pillar  
 - Avoid generic tasks  
@@ -150,15 +152,16 @@ Your output MUST include:
 5. No Code Changes (analysis-only)
 
 ======================================================================
-8. BACKLOG INTEGRATION RULES
+8. TASK INTEGRATION RULES
 ======================================================================
-You MUST NOT modify `BACKLOG.md` until the user approves the improvement list.
+You MUST NOT modify `TASKS.md` until the user approves the improvement list.
 
 After approval:
-- Append improvements under a new section: `## Improvements Identified by Project Analysis`
-- Preserve deterministic formatting  
-- Preserve model tags and category tags  
-- Group related improvements into phases when the work is sequential and assign optional Codex tags (Mini/Max) when the task matches the low-burn scenarios described in `backlog-tagging-governance.md`.  
+- Convert improvements into structured tasks in `TASKS.md`.
+- Ensure new tasks are linked to the appropriate Phase in `ROADMAP.md`.
+- Preserve deterministic formatting (Goal, Why, Files to touch, Acceptance criteria).
+- Preserve model tags and category tags.
+- If a legacy `BACKLOG.md` exists, move all verified improvements to `TASKS.md` and mark `BACKLOG.md` for deletion.
 
 See `backlog-tagging-governance.md` for model and domain tagging rules.
 
@@ -173,7 +176,7 @@ You MUST:
 
 You MUST NOT:
 - Modify code  
-- Modify backlog prematurely  
+- Modify roadmap/tasks prematurely  
 - Invent new architectural patterns  
 - Skip analysis pillars  
 

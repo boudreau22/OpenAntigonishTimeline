@@ -38,10 +38,18 @@ This file defines:
 - which folders to sync  
 - optional overrides  
 
-### **3. Governed Skills**
+### **3. Global Governance (Authority)**
 Located at:
 ```
-docs/ai-skills-registry/prompts/skills/
+prompts/system/GEMINI.md
+```
+
+This file MUST be copied into `<repo-root>/docs/ai-skills-registry/prompts/system/GEMINI.md`.
+
+### **4. Governed Skills**
+Located at:
+```
+prompts/skills/
 ```
 
 These files are copied into `<repo-root>/docs/ai-skills-registry/prompts/skills/`.
@@ -126,7 +134,9 @@ docs/REPO_MANIFEST.md
 # 🧭 What Gets Synced
 
 ### **Synced**
-- `prompts/skills/`  
+- `prompts/system/GEMINI.md` (The ultimate authority)
+- `prompts/skills/` (All governed skills)
+- `prompts/tools/` (Global sync and workflow tools)
 - Any new governed skills  
 - Updated governed skills  
 - Deterministic formatting  
