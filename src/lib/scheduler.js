@@ -193,15 +193,92 @@ export class Scheduler {
                 if (updateError) throw new Error(`Update tasks error: ${updateError.message}`);
             }
 
+            // 7. Detect Resource Conflicts
+            const currentProjectTasks = Array.from(graph.values()).map(node => ({
+                id: node.id,
+                name: node.name,
+                start: node.es,
+                end: node.ef,
+                required_resources: node.required_resources
+            }));
+
+            const conflicts = await this.detectResourceConflicts(projectId, currentProjectTasks);
+
             return {
                 message: 'Schedule recalculated',
                 projectFinishDate: new Date(projectFinishTime).toISOString().split('T')[0],
-                tasksUpdated: updates.length
+                tasksUpdated: updates.length,
+                conflicts
             };
 
         } catch (error) {
             console.error('Scheduler Error:', error);
             throw error;
         }
+    }
+
+    async detectResourceConflicts(projectId, currentProjectTasks) {
+        // Filter tasks that have resources
+        const resourceTasks = currentProjectTasks.filter(t => t.required_resources && Array.isArray(t.required_resources) && t.required_resources.length > 0);
+        if (resourceTasks.length === 0) return [];
+
+        // Fetch tasks from other active projects
+        const { data: otherTasks, error } = await this.supabase
+            .from('tasks')
+            .select(`
+                id,
+                name,
+                project_id,
+                earliest_start,
+                duration_days,
+                required_resources,
+                projects (name, status)
+            `)
+            .neq('project_id', projectId)
+            .neq('status', 'completed'); // Filter out completed tasks if needed, or based on project status
+
+        if (error) {
+            console.error('Error fetching other tasks for conflict detection:', error);
+            return [];
+        }
+
+        const conflicts = [];
+
+        for (const myTask of resourceTasks) {
+            for (const otherTask of otherTasks) {
+                // Skip if other task has no resources or project is not active/planning/in_progress
+                if (!otherTask.required_resources || !Array.isArray(otherTask.required_resources) || otherTask.required_resources.length === 0) continue;
+                if (otherTask.projects && otherTask.projects.status === 'completed') continue;
+
+                // Check for shared resources
+                const sharedResources = myTask.required_resources.filter(r => otherTask.required_resources.includes(r));
+                if (sharedResources.length === 0) continue;
+
+                // Determine other task time range
+                let otherStart = null;
+                let otherEnd = null;
+
+                if (otherTask.earliest_start) {
+                    otherStart = new Date(otherTask.earliest_start).getTime();
+                    const durationMs = (otherTask.duration_days || 0) * 24 * 60 * 60 * 1000;
+                    otherEnd = otherStart + durationMs;
+                }
+
+                // If other task has no scheduled start, skip
+                if (!otherStart) continue;
+
+                // Check Overlap
+                // Overlap if (StartA < EndB) and (EndA > StartB)
+                if (myTask.start < otherEnd && myTask.end > otherStart) {
+                    conflicts.push({
+                        resource: sharedResources.join(', '),
+                        task_a: { id: myTask.id, name: myTask.name, start: new Date(myTask.start).toISOString().split('T')[0], end: new Date(myTask.end).toISOString().split('T')[0] },
+                        task_b: { id: otherTask.id, name: otherTask.name, project: otherTask.projects?.name, start: new Date(otherStart).toISOString().split('T')[0], end: new Date(otherEnd).toISOString().split('T')[0] }
+                    });
+                }
+            }
+        }
+
+        return conflicts;
     }
 }
