@@ -73,3 +73,15 @@ This file tracks granular tasks for the project.
     - Authenticated users (or verified residents) can cast votes.
     - Vote counts are updated in real-time.
   - **Do not:** Allow multiple votes per user without proper checks.
+
+
+## Modular Audit (2026-03-05)
+
+- [ ] **Extract issue management table concerns into modules**
+  - **Buried features flagged**: `src/components/IssueTable.jsx` combines fetching, sorting/filtering/search, conversion modal workflow, and project linkage in one file.
+  - **Target modularization**: create `src/modules/issues/` (`query`, `table-state`, `conversion-flow`, `project-map`) and convert `IssueTable` to composition.
+
+- [ ] **Split scheduler engine responsibilities by concern**
+  - **Buried features flagged**: `src/lib/scheduler.js` centralizes dependency graph validation, CPM timing calculations, and persistence/update logic in one engine file.
+  - **Target modularization**: move to `src/modules/scheduler/` (`graph`, `timing`, `persistence`) and keep a lightweight facade in `src/lib/scheduler.js`.
+

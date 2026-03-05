@@ -1,0 +1,13 @@
+﻿{
+    "$schema":  "https://modelcontextprotocol.io/schemas/config/v1",
+    "servers":  {
+                    "agentos-skills-local":  {
+                                                 "type":  "local",
+                                                 "path":  "C:\\Users\\andre\\OneDrive\\Documents\\GitHub\\AgentOS\\prompts\\skills",
+                                                 "resources":  [
+                                                                   "**/*.md"
+                                                               ]
+                                             }
+                }
+}
+
